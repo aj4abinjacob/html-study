@@ -10,39 +10,54 @@
 
   <body>
     <div id="main">
-      <div id="welcome"></div>
-      <div id="process">
+
+      <!-- Welcome Screen -->
+      <div id="welcome-screen">
+        <div id="welcome-process">
+          <div id="welcome-header">
+            <h1>Multi Data Combiner</h1>
+            <h1>Select your files</h1>
+          </div>
+          <div id="welcome-file-browse">
+            <input type="button" value="Browse" id="browse-button" class ="welcome-buttons"/>
+            <input type="button" value="Add More" id="add-more-button" class ="welcome-buttons"/>
+          </div>
+          <div id="welcome-file-names">
+            <p>File 1 fjkncdjkckjdhjck</p>
+            <p>File 1 jkdshjchdjsgcjdshbhj</p>
+            <p>File 1 jdhjsbdhshvdhvshvhgdvhsvhgvdhgvsghv</p>
+
+          </div>
+          <div id="welcome-submit">
+          <input type="button" value="Submit" id="welcome-submit-button" class ="welcome-buttons"/>
+          </div>
+  
+        </div>
+       
+        </div>       
+      </div>
+
+      <!-- Process Screen -->
+      <div id = "main-process-screen">
+      <div id="process-screen">
         <div id="process-header"><h1>Multi Data Combiner</h1></div>
         <div id="process-body">
           <div id="process-left-div-container">
-            <div class="inputs-container">
+            <div class="inputs-container" id="inputs-container">
               <h2>left div</h2>
-              <div class="column-inputs-container">
-                <input type="text" class="header-input" placeholder="Header" />
-                <input
-                  type="text"
-                  class="column-names-input"
-                  placeholder="Column Names"
-                />
-                <input type="button" class="remove-button" value="Remove" />
-              </div>
-
-              <div class="column-inputs-container">
-                <input type="text" class="header-input" placeholder="Header" />
-                <input
-                  type="text"
-                  class="column-names-input"
-                  placeholder="Column Names"
-                />
-                <input type="button" class="remove-button" value="Remove" />
-              </div>
             </div>
             <div id="add-button-container">
-              <input type="button" value="Add" id="add-button" />
+              <input type="button" value="Add" id="add-button" onclick="addMore()"/>
             </div>
           </div>
           <div id="process-right-div-container">
-            <h2>right div</h2>
+            <div id="right-div-header-and-indicator">
+            <h2 id = "right-div-header">All Column Names</h2>
+            <div id="dot-indicator"></div>
+            </div>
+            <div id = "all-column-names-container">
+           
+            </div>
           </div>
         </div>
         <div id="process-tail">
@@ -50,7 +65,10 @@
           <input type="button" value="Combine" id="combine-button" />
         </div>
       </div>
+      </div>
       <div id="end"></div>
     </div>
+
+    <script type = "text/javascript" src="script.js"></script>
   </body>
 </html>

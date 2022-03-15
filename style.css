@@ -1,48 +1,153 @@
-body {
-  padding-left: 30px;
-  padding-right: 30px;
-
-  background-color: #ffffff;
+*{
   margin: 0;
 }
 
-#process-body {
+
+body {
+ 
+}
+
+#welcome-screen{
+  background: red;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: none;
+  z-index: 1;
+  /* row-gap: 10px; */
+   
+}
+#welcome-process{
   display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+  
+  /* display: flex; */
+  flex-direction: column;
+}
+
+#welcome-header{
+  padding: 40px;
+  width: 1fre;
+  text-align: center;
+  padding-bottom: 10px;
+  background: rgb(60, 60, 202);
+}
+
+#welcome-file-browse{
+  display: flex;
+  gap:10px;
+  width: 100%;
   flex-direction: row;
-  padding-bottom: 600px;
+  justify-content: center;
+}
+
+#welcome-file-names{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 40%;
+}
+
+#welcome-submit{
+  display: flex;
+  width: 1fre;
+  padding-top: 10px;
+  background: black;
+  justify-content: center;
+}
+
+.welcome-buttons{
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#welcome-submit-button{
+  /* background: black; */
+  /* justify-content: center; */
+  display: block;
+
+}
+
+
+
+#process-screen{
+  padding-left: 30px;
+  padding-right: 30px;
+  flex-direction: row;
+  background-color: #635b5b;
+  height: 100%;
+
+}
+
+#main-process-screen{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+#process-header{
+  padding-top: 25px;
+}
+
+#process-body {
+  display: grid;
+  flex-direction: row;
+  padding-bottom: 15px;
+  grid-template-columns: 2fr 1fr;
 }
 
 #process-left-div-container {
   padding-top: 25px;
   display: flex;
   flex-direction: column;
-  width: 65%;
   position: relative;
-  background: rgb(252, 176, 176);
+  padding-bottom: 12px;
+  /* background: rgb(252, 176, 176); */
 }
 
 .inputs-container {
   display: flex;
+  justify-content: space-between;
   gap: 15px;
   flex-direction: column;
   padding-bottom: 10px;
-  background: rgb(226, 9, 9);
+  /* background: rgb(226, 9, 9); */
 }
 
 .column-inputs-container {
-  display: flex;
-  gap: 10px;
-  background: orchid;
+  display: grid;
+  grid-template-columns: 2fr 2fr 0.25fr;
+
+  gap: 0px 10px;
+  /* background: orchid; */
   flex-direction: row;
+
+}
+
+.process-input-field {
+  padding: 10px;
+  border-radius: 8px;
+  padding-left: 18px;
+  border-style: hidden;
+}
+
+.remove-button{
+  border-radius: 8px;
+  cursor: pointer;
+  border-color: #ffffff;
+  background: rgb(240, 61, 76);
 }
 
 .column-names-input {
-  width: 45%;
+  /* width: 450px; */
 }
 
 .header-input {
-  width: 45%;
+  /* width: 450; */
 }
+
+
 
 /* #column-names-input {
 
@@ -55,13 +160,55 @@ body {
 #add-button {
   position: absolute;
   bottom: 0;
-  left: 45%;
+  left: 44%;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgb(43, 219, 43);
+
 }
 
 #process-right-div-container {
-  width: 35%;
   padding-top: 25px;
-  background: rgb(127, 127, 172);
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}
+
+
+#right-div-header-and-indicator{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+}
+
+#right-div-header{
+}
+
+
+#dot-indicator{
+  height: 25px;
+  width: 25px;
+  background-color: grey;
+  border-radius: 25px;
+  position: absolute;
+  right: 0;
+  top: 3%;
+
+}
+
+#all-column-names-container{
+  padding-top: 15px;
+  gap:10px;
+  display:flex;
+}
+
+.all-column-names-button{
+  background: gold;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 #process-tail {
@@ -69,6 +216,12 @@ body {
 }
 
 #combine-button {
+  padding: 10px;
   position: absolute;
   right: 0;
+  cursor: pointer;
+  background: rgb(60, 60, 202);
+  border-radius: 8px;
+
 }
+
