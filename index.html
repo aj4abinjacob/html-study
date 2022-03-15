@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Multi Data Combiner</title>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="welcome"></div>
+      <div id="process">
+        <div id="process-header"><h1>Multi Data Combiner</h1></div>
+        <div id="process-body">
+          <div id="process-left-div-container">
+            <div class="inputs-container">
+              <h2>left div</h2>
+              <div class="column-inputs-container">
+                <input type="text" class="header-input" placeholder="Header" />
+                <input
+                  type="text"
+                  class="column-names-input"
+                  placeholder="Column Names"
+                />
+                <input type="button" class="remove-button" value="Remove" />
+              </div>
+
+              <div class="column-inputs-container">
+                <input type="text" class="header-input" placeholder="Header" />
+                <input
+                  type="text"
+                  class="column-names-input"
+                  placeholder="Column Names"
+                />
+                <input type="button" class="remove-button" value="Remove" />
+              </div>
+            </div>
+            <div id="add-button-container">
+              <input type="button" value="Add" id="add-button" />
+            </div>
+          </div>
+          <div id="process-right-div-container">
+            <h2>right div</h2>
+          </div>
+        </div>
+        <div id="process-tail">
+          tail div
+          <input type="button" value="Combine" id="combine-button" />
+        </div>
+      </div>
+      <div id="end"></div>
+    </div>
+  </body>
+</html>
