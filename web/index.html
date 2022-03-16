@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Container -->
+    <div id="welcome-container">
+        <div id="welcome-header">
+            <h1>Multi Data Combiner</h1>
+        </div>
+        <div id="welcome-file-controls">
+            <input type="button" value="Browse..." id="browse-button" class="btn" onclick="getFiles()">
+            <input type="button" value="Add More" id="add-more-button" class="btn">
+        </div>
+        <div id="welcome-file-names-display"></div>
+        <div id="welcome-submit-button-container">
+            <input type="button" value="Submit" id="welcome-submit-button" class="btn">
+        </div>
+    </div>
+    <!-- Welcome container ends here -->
+    <div id="process-screen">
+        <div id="process-header">
+        <h1>Multi Data Combiner</h1>
+        </div>
+        <div id="process-container">
+            <div id="left-process">
+                <h2>User Input</h2>
+                <div id="inputs-container">
+                    <!-- User inputs will be contained here -->
+                </div>
+        
+                <div id="add-button-container">
+                    <input type="button" value="Add" id="add-button" class="btn" onclick="addMore()">
+                </div>
+            </div>
+            <!-- left process div ends here -->
+            <div id="right-process">
+                <h2>All columns</h2>
+                <div id="all-buttons-container">
+                    <div id="column-names-container"></div>
+                    <div id="combine-button-container">
+                        <input type="button" value="Combine" id="combine-button" class="btn">
+                    </div> 
+                </div>    
+            </div>
+            <!-- right process div ends here -->
+        </div>
+    </div>
+        <!-- process div ends here -->
+
+    <div id="end-container"></div>
+
+
+<script type = "text/javascript" src="script.js"></script> 
+<script type = "text/javascript" src="/eel.js"></script> 
+</body>
+</html>

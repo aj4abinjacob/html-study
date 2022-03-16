@@ -1,19 +1,27 @@
-var inputs_container, column_inputs_container_var,current_selection
+var inputs_container, column_inputs_container_var,current_selection,all_file_names 
 
+all_file_names = []
+all_column_names = []
+async function getFiles(){
+    files_and_columns = await eel.selectFiles()(); // Must prefix call with 'await', otherwise it's the same syntax
+//   console.log("Got this from Python: " + n[0]);
+    all_file_names.push(files_and_columns[0])
+    all_column_names = files_and_columns[1]
+    console.log(all_file_names)
+    console.log(all_column_names)
 
+    }
+  
 
-inputs_container = document.getElementById("inputs-container")
-column_inputs_container_var = 0
-all_column_names = ["root","date","date input"]
 
 // Add column names button received from python
 for(let i=0; i< all_column_names.length;i++){
     column_name = all_column_names[i]
-    all_column_container_div = document.getElementById("all-column-names-container")
+    all_column_container_div = document.getElementById("column-names-container")
     column_button = document.createElement("input")
     column_button.setAttribute("type","button")
     column_button.setAttribute("value",column_name)
-    column_button.setAttribute("class","all-column-names-button")
+    column_button.setAttribute("class","all-column-names-button btn all-col-btn")
     column_button.setAttribute("id",`button_id_${column_name}`)
     column_button.setAttribute("onclick","sendColumnToInput(this.value)")
     all_column_container_div.appendChild(column_button)
@@ -52,10 +60,6 @@ function setCurrentFocus(id){
     checkInput();
 }
 
-
-
-
-
 // Send column name to input
 
 function sendColumnToInput(column_name){
@@ -76,13 +80,36 @@ function sendColumnToInput(column_name){
 
 
 
-function addMore(){
-    // adding child input container
-    column_inputs_container = document.createElement("div")
-    /* rm is used to later remove this when user press remove*/
-    column_inputs_container.setAttribute("class",`column-inputs-container rm_${column_inputs_container_var}`) 
-    inputs_container.appendChild(column_inputs_container)
 
+
+// Send column name to input
+
+function sendColumnToInput(column_name){
+    if(current_selection.includes("column_names_input_")){
+        existing_value_in_column_names_input = document.getElementById(current_selection).value
+        if(existing_value_in_column_names_input.length > 0){
+            if(existing_value_in_column_names_input.includes(column_name) === false){
+                document.getElementById(current_selection).value = existing_value_in_column_names_input + `,${column_name}`
+            }else{
+                document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(column_name,"")
+                existing_value_in_column_names_input = document.getElementById(current_selection).value
+                document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(",,",",").replace(/(^,)|(,$)/g, "")
+            }
+        }else{
+            document.getElementById(current_selection).value = column_name
+        }
+    }else{
+    document.getElementById(current_selection).value = column_name
+    }
+    // Check after sending to input
+    checkInput();
+}
+
+
+column_inputs_container_var = 1
+inputs_container = document.getElementById("inputs-container")
+
+function addMore(){
 
     // adding header input
     header_input = document.createElement("input")
@@ -92,7 +119,7 @@ function addMore(){
     header_input.setAttribute("id",`header_input_${column_inputs_container_var}`)
     header_input.setAttribute("onclick","setCurrentFocus(this.id)")
     header_input.setAttribute("class",`header-input rm_${column_inputs_container_var} process-input-field`)
-    column_inputs_container.appendChild(header_input)
+    inputs_container.appendChild(header_input)
 
 
     // adding column names
@@ -104,46 +131,43 @@ function addMore(){
     column_names_input.setAttribute("oninput","checkInput()")    
 
     column_names_input.setAttribute("class",`column-names-input rm_${column_inputs_container_var} process-input-field`)
-    column_inputs_container.appendChild(column_names_input)
+    inputs_container.appendChild(column_names_input)
 
     // adding remove button
     remove_button = document.createElement("input")
     remove_button.setAttribute("type","button")
     remove_button.setAttribute("value","Remove")
-    remove_button.setAttribute("class",`remove-button rm_${column_inputs_container_var}`)
+    remove_button.setAttribute("class",`remove-button rm_${column_inputs_container_var} btn`)
     remove_button.setAttribute("onclick","removeInputDiv(this)")
-    column_inputs_container.appendChild(remove_button)
+    inputs_container.appendChild(remove_button)
 
     // Setting focus to current column names input
     current_selection = `column_names_input_${column_inputs_container_var}`
 
      // set focus to current div when user press add
-     column_inputs_container.scrollIntoView();
+    remove_button.scrollIntoView();
 
 
      // Check Input
-     checkInput();
+    checkInput();
 
      // adding column_inputs_container_var 
-     column_inputs_container_var ++
+    column_inputs_container_var ++
 
     
 }
 
+
 // Remove button function
 function removeInputDiv(button){
-    rm_class = `${button.className}`.split(" ")
-    rm_class = rm_class[rm_class.length - 1]
-    document.querySelectorAll(`.${rm_class}`).forEach(el => el.remove());
-     // Check Input
-     checkInput();
+    number_of_inputs = document.getElementsByClassName(`process-input-field`)
+    if(number_of_inputs.length>2){
+        rm_class = `${button.className}`.split(" ")
+        rm_class = rm_class[rm_class.length - 2]
+        document.querySelectorAll(`.${rm_class}`).forEach(el => el.remove());
+        // Check Input
+        checkInput();
+    }
 }
 
-//adding input container once for aesthetic purpose
 addMore();
-
-
-
-
-
-

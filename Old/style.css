@@ -171,6 +171,7 @@ body {
 #process-right-div-container {
   padding-top: 25px;
   display: flex;
+
   flex-direction: column;
   padding-left: 15px;
 }
@@ -199,9 +200,13 @@ body {
 }
 
 #all-column-names-container{
+  position: sticky;
+  top: 0;
   padding-top: 15px;
   gap:10px;
   display:flex;
+  flex-direction: column;
+  flex-wrap: ;
 }
 
 .all-column-names-button{
