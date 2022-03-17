@@ -97,9 +97,9 @@ function checkInput(){
     for(let i = 0; i < all_column_names.length ; i++){
         el =  all_column_names[i]
         if(columns_user_has_added.includes(el) && column_names_and_frequencies[el] === 1){
-            document.getElementById(`button_id_${el}`).style.background='#E0E0E0'
+            document.getElementById(`button_id_${el}`).style.background='#FFD700'
         }else if(!columns_user_has_added.includes(el)){
-            document.getElementById(`button_id_${el}`).style.background= "#FFD700"
+            document.getElementById(`button_id_${el}`).style.background= "#E0E0E0"
         }else{
             document.getElementById(`button_id_${el}`).style.background= "#FF0000"
         }
