@@ -98,6 +98,8 @@ function initiateProcessScreen(){
     all_column_names.sort()
     addColumnsFromPython();
     checkInput();
+    addMore();
+
 }
 
 
@@ -191,7 +193,7 @@ function addMore(){
     inputs_container.appendChild(remove_button)
 
     // Setting focus to current column names input
-    current_selection = `column_names_input_${column_inputs_container_var}`
+    current_selection = `header_input_${column_inputs_container_var}`
 
      // set focus to current div when user press add
     remove_button.scrollIntoView();
@@ -233,4 +235,3 @@ function sendUserInputToPython(){
 
 }
 
-addMore();
