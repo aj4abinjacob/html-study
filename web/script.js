@@ -2,32 +2,69 @@ var inputs_container, column_inputs_container_var,current_selection,all_file_nam
 
 all_file_names = []
 all_column_names = []
-async function getFiles(){
+var already_showed_files = []
+
+//Disable browse button and submit button during initial window
+function showHideWelcomeButton(){
+    if(already_showed_files.length===0){
+        document.getElementById("add-more-button").style.display = "none";
+        document.getElementById("welcome-submit-button").style.display = "none";
+    }else{
+        document.getElementById("add-more-button").style.display = "inline-block";
+        document.getElementById("welcome-submit-button").style.display = "inline-block";
+    }
+}
+
+showHideWelcomeButton();
+
+
+async function getFiles(id){
     files_and_columns = await eel.selectFiles()(); // Must prefix call with 'await', otherwise it's the same syntax
 //   console.log("Got this from Python: " + n[0]);
-    all_file_names.push(files_and_columns[0])
-    all_column_names = files_and_columns[1]
+    file_names_container = document.getElementById("file-names-container");
+    all_file_names = [...new Set(all_file_names)]
+    if(id === "browse-button"){
+        already_showed_files = []
+        file_names_container.replaceChildren();
+        all_file_names = files_and_columns[0]
+        all_column_names = files_and_columns[1]
+    }else{
+        all_file_names.push(...files_and_columns[0])
+        all_column_names.push(...files_and_columns[1])
+    };
+    
     console.log(all_file_names)
     console.log(all_column_names)
 
+    // Show file names received
+    for(let i=0; i <all_file_names.length; i++){
+        file_name = all_file_names[i]
+        if(already_showed_files.includes(file_name) == false){
+            file_name_element = document.createElement("p");
+            file_name_element.textContent = `${already_showed_files.length+1}. ${file_name}`
+            file_names_container.appendChild(file_name_element)
+            already_showed_files.push(file_name)
+        }
     }
-  
+    showHideWelcomeButton();
 
+    }
 
-// Add column names button received from python
-for(let i=0; i< all_column_names.length;i++){
-    column_name = all_column_names[i]
-    all_column_container_div = document.getElementById("column-names-container")
-    column_button = document.createElement("input")
-    column_button.setAttribute("type","button")
-    column_button.setAttribute("value",column_name)
-    column_button.setAttribute("class","all-column-names-button btn all-col-btn")
-    column_button.setAttribute("id",`button_id_${column_name}`)
-    column_button.setAttribute("onclick","sendColumnToInput(this.value)")
-    all_column_container_div.appendChild(column_button)
+let addColumnsFromPython = function (){
+    // Add column names button received from python
+    for(let i=0; i< all_column_names.length;i++){
+        column_name = all_column_names[i]
+        all_column_container_div = document.getElementById("column-names-container")
+        column_button = document.createElement("input")
+        column_button.setAttribute("type","button")
+        column_button.setAttribute("value",column_name)
+        column_button.setAttribute("class","all-column-names-button btn all-col-btn")
+        column_button.setAttribute("id",`button_id_${column_name}`)
+        column_button.setAttribute("onclick","sendColumnToInput(this.value)")
+        all_column_container_div.appendChild(column_button)
     
 }
-
+}
 
 //Check Input
 
@@ -51,6 +88,19 @@ function checkInput(){
         }
     }
 }
+
+
+
+function initiateProcessScreen(){
+    document.getElementById("welcome-container").style.display = "none";
+    document.getElementById("process-screen").style.display = "block";
+    all_column_names = [...new Set(all_column_names)]
+    all_column_names.sort()
+    addColumnsFromPython();
+    checkInput();
+}
+
+
 
 
 // Set current focus
@@ -118,7 +168,7 @@ function addMore(){
     header_input.setAttribute("oninput","checkInput()")  
     header_input.setAttribute("id",`header_input_${column_inputs_container_var}`)
     header_input.setAttribute("onclick","setCurrentFocus(this.id)")
-    header_input.setAttribute("class",`header-input rm_${column_inputs_container_var} process-input-field`)
+    header_input.setAttribute("class",`headers-input rm_${column_inputs_container_var} process-input-field`)
     inputs_container.appendChild(header_input)
 
 
@@ -129,7 +179,6 @@ function addMore(){
     column_names_input.setAttribute("id",`column_names_input_${column_inputs_container_var}`)
     column_names_input.setAttribute("onclick","setCurrentFocus(this.id)")
     column_names_input.setAttribute("oninput","checkInput()")    
-
     column_names_input.setAttribute("class",`column-names-input rm_${column_inputs_container_var} process-input-field`)
     inputs_container.appendChild(column_names_input)
 
@@ -168,6 +217,20 @@ function removeInputDiv(button){
         // Check Input
         checkInput();
     }
+}
+
+
+// Send user inputs to python
+
+function sendUserInputToPython(){
+    column_names_elements = document.getElementsByClassName("column-names-input")
+    column_names = []
+    for(let i=0;i<column_names_elements.length;i++){column_names.push(column_names_elements[i].value)}
+    headers_input_elements = document.getElementsByClassName("headers-input")
+    headers_input = []
+    for(let i=0;i<headers_input_elements.length;i++){headers_input.push(headers_input_elements[i].value)}
+    eel.receiveInputs(column_names,headers_input);
+
 }
 
 addMore();

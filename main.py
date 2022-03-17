@@ -19,9 +19,9 @@ def readDf(file):
 
 def readDfCols(file):
     if file.endswith(".csv") or file.endswith(".tsv"):
-        df = pd.read_csv(file, low_memory=False, nrows=100)
+        df = pd.read_csv(file, low_memory=False, nrows=10)
     elif file.endswith(".xlsx") or file.endswith(".xls"):
-        df = pd.read_excel(file, nrows=100)
+        df = pd.read_excel(file, nrows=10)
     return df
 
 
@@ -44,9 +44,13 @@ def selectFiles():
         for x in df.columns:
             all_columns.append(x)
     all_columns = list(dict.fromkeys(all_columns))
-    files_and_columns = [all_columns, file_names]
-
+    files_and_columns = [file_names, all_columns]
     return files_and_columns
+
+
+@eel.expose
+def receiveInputs(headers_input, column_names):
+    print(headers_input, column_names)
 
 
 eel.init("web")

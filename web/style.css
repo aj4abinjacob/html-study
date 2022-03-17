@@ -89,18 +89,17 @@
     height: 100vh;
     width: 100vw;
     position: relative;
-    background: red;
     flex-direction: column;
     /* display: none; */
 }
 
 #welcome-header{
-    padding-top: 25px;
+    padding-top: 50px;
     text-align: center;
 }
 
 #welcome-file-controls{
-    padding-top: 10px;
+    padding-top: 20px;
     position: relative;
     /* align-items: center; */
     display: flex;
@@ -110,10 +109,24 @@
 
 #welcome-file-names-display{
     position: relative;
-    height: 100px;
-    background: white;
+    padding-top: 20px;
+    overflow: auto;
+    height: 200px;
+    padding-bottom: 20px;
+
+    /* justify-content: center; */
+}
+#file-names-container{
+    position: absolute;
+    /* height: 100px; */
+    /* background: white; */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    left: 25%;
+
+
+
+
 }
 
 #welcome-submit-button-container{
@@ -121,6 +134,13 @@
     display: flex;
     justify-content: center;
     /* left: 50%; */
+}
+
+#welcome-submit-button{
+    background: rgb(83, 83, 240);
+    color:white;
+    padding: 10px;
+    font-weight: bold;
 }
 
 /* Welcome container ends here */
