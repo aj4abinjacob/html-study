@@ -26,6 +26,7 @@ async function getFiles(id){
     if(id === "browse-button"){
         already_showed_files = []
         file_names_container.replaceChildren();
+        document.getElementById("inputs-container").replaceChildren();
         all_file_names = files_and_columns[0]
         all_column_names = files_and_columns[1]
     }else{
@@ -51,10 +52,11 @@ async function getFiles(id){
     }
 
 let addColumnsFromPython = function (){
+    all_column_container_div = document.getElementById("column-names-container")
+    all_column_container_div.replaceChildren();
     // Add column names button received from python
     for(let i=0; i< all_column_names.length;i++){
         column_name = all_column_names[i]
-        all_column_container_div = document.getElementById("column-names-container")
         column_button = document.createElement("input")
         column_button.setAttribute("type","button")
         column_button.setAttribute("value",column_name)
@@ -100,6 +102,11 @@ function initiateProcessScreen(){
     checkInput();
     addMore();
 
+}
+
+function goBack(){
+    document.getElementById("welcome-container").style.display = "block";
+    document.getElementById("process-screen").style.display = "none";
 }
 
 
@@ -167,10 +174,12 @@ function addMore(){
     header_input = document.createElement("input")
     header_input.setAttribute("type","input")
     header_input.setAttribute("placeholder","Header")  
-    header_input.setAttribute("oninput","checkInput()")  
+    header_input.setAttribute("oninput","checkInput()") 
+    // header_input.setAttribute("onkeydown","addAnotherInput()") 
     header_input.setAttribute("id",`header_input_${column_inputs_container_var}`)
     header_input.setAttribute("onclick","setCurrentFocus(this.id)")
     header_input.setAttribute("class",`headers-input rm_${column_inputs_container_var} process-input-field`)
+
     inputs_container.appendChild(header_input)
 
 
@@ -197,7 +206,7 @@ function addMore(){
 
      // set focus to current div when user press add
     remove_button.scrollIntoView();
-
+    header_input.focus();
 
      // Check Input
     checkInput();
@@ -207,6 +216,27 @@ function addMore(){
 
     
 }
+
+
+
+// Notice enter key
+function keydown (evt) { 
+    // console.log(evt.keyCode);
+
+    if (evt.shiftKey && evt.keyCode === 13 && document.getElementById("welcome-container").style.display === "none") {
+        current_selection_for_switch = current_selection.split("_");
+        current_selection_for_switch = current_selection_for_switch[current_selection_for_switch.length-1]
+        if(current_selection.includes("header_input") === false){
+            addMore();
+        }else if(current_selection.includes("header_input")){
+            document.getElementById(`column_names_input_${current_selection_for_switch}`).focus();
+            current_selection = `column_names_input_${current_selection_for_switch}`
+        }
+        // alert("shift and enter")
+    }
+
+}
+document.onkeydown = keydown; 
 
 
 // Remove button function
@@ -231,7 +261,25 @@ function sendUserInputToPython(){
     headers_input_elements = document.getElementsByClassName("headers-input")
     headers_input = []
     for(let i=0;i<headers_input_elements.length;i++){headers_input.push(headers_input_elements[i].value)}
-    eel.receiveInputs(column_names,headers_input);
+    all_file_names = [... new Set(all_file_names)];
+    valid_submit = true
+    valid_column_names=true
+    for(let i=0;i<column_names.length;i++){
+        if(headers_input[i] === "" || column_names[i] === ""){valid_submit=false}
+        each_column_input_elements = column_names[i].split(",")
+        for(let j=0;j<each_column_input_elements.length;j++){
+            if(all_column_names.includes(each_column_input_elements[j]) === false){valid_column_names=false}
+        }
+    }
+
+    if(valid_submit === false && valid_column_names === true ){
+        alert("Please fill all input fields");
+
+    }else if(valid_column_names === false){
+        alert("Please fill column names input field with valid inputs");
+    }else{
+        eel.receiveInputs(all_file_names,headers_input,column_names);
+    }
 
 }
 

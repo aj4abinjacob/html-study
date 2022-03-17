@@ -49,12 +49,11 @@ def selectFiles():
 
 
 @eel.expose
-def receiveInputs(headers_input, column_names):
-    print(headers_input, column_names)
+def receiveInputs(all_file_names, headers_input, column_names):
+    print(all_file_names, headers_input, column_names)
 
 
 eel.init("web")
-filenames = []
 
 
 eel.start("index.html", size=(1000, 600))
