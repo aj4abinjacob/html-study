@@ -10,6 +10,11 @@ function getOnlyNumber(text){
     return Number(text.replace(/\D/g,''));
 }
 
+// Count number of items occurring in an array
+function count(arr) {
+    return arr.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})
+  }
+
 //Disable browse button and submit button during initial window
 function showHideWelcomeButton(){
     if(already_showed_files.length===0){
@@ -87,12 +92,16 @@ function checkInput(){
             })  
         }
     }
+    column_names_and_frequencies = count(columns_user_has_added)
+    console.log(column_names_and_frequencies)
     for(let i = 0; i < all_column_names.length ; i++){
         el =  all_column_names[i]
-        if(columns_user_has_added.includes(el)){
+        if(columns_user_has_added.includes(el) && column_names_and_frequencies[el] === 1){
             document.getElementById(`button_id_${el}`).style.background='#E0E0E0'
-        }else{
+        }else if(!columns_user_has_added.includes(el)){
             document.getElementById(`button_id_${el}`).style.background= "#FFD700"
+        }else{
+            document.getElementById(`button_id_${el}`).style.background= "#FF0000"
         }
     }
 }
