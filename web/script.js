@@ -7,7 +7,7 @@ var already_showed_files = []
 
 // Extract number from string
 function getOnlyNumber(text){
-    return text.replace(/\D/g,'');
+    return Number(text.replace(/\D/g,''));
 }
 
 //Disable browse button and submit button during initial window
@@ -40,8 +40,8 @@ async function getFiles(id){
         all_column_names.push(...files_and_columns[1])
     };
     
-    console.log(all_file_names)
-    console.log(all_column_names)
+    // console.log(all_file_names)
+    // console.log(all_column_names)
 
     // Show file names received
     for(let i=0; i <all_file_names.length; i++){
@@ -186,6 +186,7 @@ function addMore(){
     remove_button = document.createElement("input")
     remove_button.setAttribute("type","button")
     remove_button.setAttribute("value","Remove")
+    remove_button.setAttribute("id",`remove_button_${column_inputs_container_var}`)
     remove_button.setAttribute("class",`remove-button rm_${column_inputs_container_var} btn`)
     remove_button.setAttribute("onclick","removeInputDiv(this)")
     inputs_container.appendChild(remove_button)
@@ -212,31 +213,21 @@ function addMore(){
 function keydown (evt) { 
     
     if (evt.shiftKey && evt.keyCode === 13 && document.getElementById("welcome-container").style.display === "none") {
-        current_selection_for_switch = current_selection.split("_");
-        current_selection_for_switch = current_selection_for_switch[current_selection_for_switch.length-1]
-        user_inputs_length = document.getElementsByClassName("column-names-input");
-        last_column_inputs_value = user_inputs_length[user_inputs_length.length-1].value;
-        current_selection_value = document.getElementById(current_selection).value
-        if(current_selection.includes("header_input") === false){
-            if (last_column_inputs_value !== "" || current_selection_value !== ""){
-                addMore();
-                // console.log(`header_input_${Number(current_selection_for_switch)+1}`);
-                
-                document.getElementById(`header_input_${Number(current_selection_for_switch)+1}`).focus();
-            }
-            
-            current_selection = `header_input_${Number(current_selection_for_switch)+1}`;
-            document.getElementById(current_selection).focus()
-            
-            
-        }else if(current_selection.includes("header_input")){
-            // console.log(current_selection,current_selection_for_switch)
-            document.getElementById(`column_names_input_${current_selection_for_switch}`).focus();
-            current_selection = `column_names_input_${current_selection_for_switch}`
+        column_names_input_check = document.getElementsByClassName("column-names-input")
+        inputs_last_element = column_names_input_check[column_names_input_check.length-1]
+        current_selection_num = getOnlyNumber(current_selection);
+        if (current_selection.includes("header_input")){
+            current_selection = `column_names_input_${current_selection_num}`
+            document.getElementById(current_selection).focus(); 
+        }else if(current_selection.includes("column_names_input") && current_selection === inputs_last_element.id){
+            addMore();
+        }else{
+            next_sibling = document.getElementById(current_selection).nextSibling
+            next_sibling = document.getElementById(next_sibling.id).nextSibling
+            next_sibling.focus();
+            current_selection = next_sibling.id;
         }
-        // alert("shift and enter")
     }
-
 }
 document.onkeydown = keydown; 
 
