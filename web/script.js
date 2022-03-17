@@ -93,7 +93,7 @@ function checkInput(){
         }
     }
     column_names_and_frequencies = count(columns_user_has_added)
-    console.log(column_names_and_frequencies)
+    // console.log(column_names_and_frequencies)
     for(let i = 0; i < all_column_names.length ; i++){
         el =  all_column_names[i]
         if(columns_user_has_added.includes(el) && column_names_and_frequencies[el] === 1){
@@ -148,7 +148,7 @@ function sendColumnToInput(column_name){
             if(existing_value_in_column_names_input.includes(column_name) === false){
                 document.getElementById(current_selection).value = existing_value_in_column_names_input + `,${column_name}`
             }else{
-                document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(column_name,"")
+                document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(new RegExp("\\b"+column_name+"\\b"), "");
                 existing_value_in_column_names_input = document.getElementById(current_selection).value
                 document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(",,",",").replace(/(^,)|(,$)/g, "")
             }
@@ -256,7 +256,7 @@ function removeInputDiv(button){
 
 // Send user inputs to python
 
-function sendUserInputToPython(){
+async function sendUserInputToPython(){
     column_names_elements = document.getElementsByClassName("column-names-input")
     column_names = []
     for(let i=0;i<column_names_elements.length;i++){column_names.push(column_names_elements[i].value)}
@@ -279,9 +279,27 @@ function sendUserInputToPython(){
 
     }else if(valid_column_names === false){
         alert("Please fill column names input field with valid inputs");
+        // If checks have passed data will start from here
     }else{
-        eel.receiveInputs(all_file_names,headers_input,column_names);
+
+        for(let i=0;i<all_file_names.length;i++){
+            file = all_file_names[i]
+            file_status = await eel.receiveInputs(file,headers_input,column_names)();
+            console.log(file_status);
+        }
+
+        final_status = await eel.finalCombine()();
+        alert(final_status);
+            
+     
+        
+
+       } 
+        // final_status = await eel.finalCombine()();
+
     }
 
-}
+
+
+
 

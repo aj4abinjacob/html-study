@@ -6,6 +6,7 @@ from numpy import absolute
 import pandas as pd
 import os
 import pathlib
+import numpy
 from tkinter import Tk
 
 
@@ -48,9 +49,54 @@ def selectFiles():
     return files_and_columns
 
 
+all_dataframes = pd.DataFrame()
+
+
 @eel.expose
-def receiveInputs(all_file_names, headers_input, column_names):
-    print(all_file_names, headers_input, column_names)
+def receiveInputs(file_name, headers_input, column_names):
+    print("Done Combining")
+    df = readDf(file_name)
+    for index, input in enumerate(column_names):
+        for col_input in input.split(","):
+            df.rename(columns={col_input: headers_input[index]}, inplace=True)
+    for col in headers_input:
+        if col not in df.columns:
+            df[col] = numpy.nan
+    df = df[headers_input]
+    global all_dataframes
+    all_dataframes = pd.concat([all_dataframes, df])
+    del df
+    return f"Done combining {file_name}"
+
+
+@eel.expose
+def finalCombine():
+    global all_dataframes
+    df = all_dataframes
+    root = Tk()  # this is to close the dialogue box later
+    root.wm_attributes("-topmost", 1)
+    root.wm_state("iconic")
+    try:
+        savefile = asksaveasfilename(filetypes=[("All files", "*.*")])
+        print(savefile)
+        if savefile.endswith(".xlsx"):
+            df.to_excel(savefile, index=False)
+        elif savefile.endswith(".xls"):
+            df.to_excel(savefile, index=False)
+        elif savefile.endswith(".tsv"):
+            df.to_csv(savefile, index=False)
+        elif savefile.endswith(".csv"):
+            df.to_csv(savefile, index=False)
+        else:
+            df.to_csv(savefile.split(".")[0] + ".csv", index=False)
+        user_output = f"All files are combined and saved as {savefile}"
+
+    except AttributeError:
+        user_output = "User canceled"
+        print("The user cancelled save")
+    root.destroy()
+    all_dataframes = pd.DataFrame()
+    return user_output
 
 
 eel.init("web")
