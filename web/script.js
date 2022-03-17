@@ -4,6 +4,12 @@ all_file_names = []
 all_column_names = []
 var already_showed_files = []
 
+
+// Extract number from string
+function getOnlyNumber(text){
+    return text.replace(/\D/g,'');
+}
+
 //Disable browse button and submit button during initial window
 function showHideWelcomeButton(){
     if(already_showed_files.length===0){
@@ -115,27 +121,10 @@ function goBack(){
 // Set current focus
 
 function setCurrentFocus(id){
+    // console.log(id);
     current_selection = id
     checkInput();
 }
-
-// Send column name to input
-
-function sendColumnToInput(column_name){
-    if(current_selection.includes("column_names_input_")){
-        existing_value_in_column_names_input = document.getElementById(current_selection).value
-        if(existing_value_in_column_names_input.length > 0){
-            document.getElementById(current_selection).value = existing_value_in_column_names_input + `,${column_name}`
-        }else{
-            document.getElementById(current_selection).value = column_name
-        }
-    }else{
-    document.getElementById(current_selection).value = column_name
-    }
-    // Check after sending to input
-    checkInput();
-}
-
 
 
 
@@ -221,14 +210,27 @@ function addMore(){
 
 // Notice enter key
 function keydown (evt) { 
-    // console.log(evt.keyCode);
-
+    
     if (evt.shiftKey && evt.keyCode === 13 && document.getElementById("welcome-container").style.display === "none") {
         current_selection_for_switch = current_selection.split("_");
         current_selection_for_switch = current_selection_for_switch[current_selection_for_switch.length-1]
+        user_inputs_length = document.getElementsByClassName("column-names-input");
+        last_column_inputs_value = user_inputs_length[user_inputs_length.length-1].value;
+        current_selection_value = document.getElementById(current_selection).value
         if(current_selection.includes("header_input") === false){
-            addMore();
+            if (last_column_inputs_value !== "" || current_selection_value !== ""){
+                addMore();
+                // console.log(`header_input_${Number(current_selection_for_switch)+1}`);
+                
+                document.getElementById(`header_input_${Number(current_selection_for_switch)+1}`).focus();
+            }
+            
+            current_selection = `header_input_${Number(current_selection_for_switch)+1}`;
+            document.getElementById(current_selection).focus()
+            
+            
         }else if(current_selection.includes("header_input")){
+            // console.log(current_selection,current_selection_for_switch)
             document.getElementById(`column_names_input_${current_selection_for_switch}`).focus();
             current_selection = `column_names_input_${current_selection_for_switch}`
         }
