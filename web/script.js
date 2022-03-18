@@ -280,9 +280,24 @@ async function sendUserInputToPython(){
         }
     }
 
+    //check to see if user has entered column input more than once
+    columns_user_has_added = []
+    for(let i = 0; i< column_names_to_check.length ; i++){
+        input_string = column_names_to_check[i].value
+        if (input_string.length > 1){
+            input_string.split(",").forEach((el)=>{
+                columns_user_has_added.push(el)             
+            })  
+        }
+    }
+    column_names_and_frequencies = count(columns_user_has_added)
+    //  
+    
     if(valid_submit === false && valid_column_names === true ){
         alert("Please fill all input fields");
 
+    }else if( Object.values(column_names_and_frequencies).reduce((a, b) => a + b, 0) > 0 ){
+        alert("You have entered a column input more than once")
     }else if(valid_column_names === false){
         alert("Please fill column names input field with valid inputs");
         // If checks have passed data will start from here
