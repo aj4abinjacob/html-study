@@ -39,6 +39,11 @@ def selectFiles():
         title="Open 'csv','xls', or 'xlsx' files", parent=root
     )
     root.destroy()
+    extensions = ["csv", "tsv", "xlsx", "xls"]
+    file_names = list(file_names)
+    for file in file_names:
+        if file.endswith(tuple(extensions)) == False:
+            file_names.remove(file)
     all_columns = []
     for file in file_names:
         df = readDfCols(file)

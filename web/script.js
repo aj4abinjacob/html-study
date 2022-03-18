@@ -144,13 +144,19 @@ function setCurrentFocus(id){
 function sendColumnToInput(column_name){
     if(current_selection.includes("column_names_input_")){
         existing_value_in_column_names_input = document.getElementById(current_selection).value
+        existing_value_in_column_names_input_array = document.getElementById(current_selection).value.split(",")
+        existing_value_in_column_names_input_array = existing_value_in_column_names_input_array.filter(e => e.length > 0)
         if(existing_value_in_column_names_input.length > 0){
-            if(existing_value_in_column_names_input.includes(column_name) === false){
-                document.getElementById(current_selection).value = existing_value_in_column_names_input + `,${column_name}`
+            if(existing_value_in_column_names_input_array.includes(column_name)){
+                existing_value_in_column_names_input_array = existing_value_in_column_names_input_array.filter(e => e !== column_name)
+                // document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(new RegExp("\\b"+column_name+"\\b"), "");
+                // existing_value_in_column_names_input = document.getElementById(current_selection).value
+                // document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(",,",",").replace(/(^,)|(,$)/g, "")
+                document.getElementById(current_selection).value = String(existing_value_in_column_names_input_array)
+                
             }else{
-                document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(new RegExp("\\b"+column_name+"\\b"), "");
-                existing_value_in_column_names_input = document.getElementById(current_selection).value
-                document.getElementById(current_selection).value = existing_value_in_column_names_input.replace(",,",",").replace(/(^,)|(,$)/g, "")
+                existing_value_in_column_names_input_array.push(column_name)
+                document.getElementById(current_selection).value = String(existing_value_in_column_names_input_array)
             }
         }else{
             document.getElementById(current_selection).value = column_name
