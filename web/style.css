@@ -190,7 +190,7 @@
 
 #inputs-container{
     display: grid;
-    grid-template-columns: 1fr 1fr .25fr;
+    grid-template-columns: 1fr 1fr 75px;
     gap: 10px 5px;
 }
 
